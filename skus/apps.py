@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SkuConfig(AppConfig):
+class SkusConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'sku'
+    name = 'skus'
