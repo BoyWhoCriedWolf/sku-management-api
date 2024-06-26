@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'sku_management_api.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         # default='postgresql://postgres:postgres@localhost:5432/sku-management-api',
-        default='postgresql://sku_management_user:yB67meSuNJNG7KaNKQUgXHlxlw8GBu3s@dpg-cpu1nsd6l47c739fud60-a.oregon-postgres.render.com/sku_management',
+        default=os.environ.get('DATABASE_URL'),
         conn_max_age=600
     )
 }
