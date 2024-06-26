@@ -1,13 +1,16 @@
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from skus.models import Sku
 from skus.serializers import SkuSerializer
 
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def sku_list(request):
     """
-    List all code skus, or create a new sku.
+    List all skus, or create a new sku.
     """
     if request.method == 'GET':
         skus = Sku.objects.all()
@@ -19,18 +22,18 @@ def sku_list(request):
         serializer = SkuSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 def sku_detail(request, pk):
     """
-    Retrieve, update or delete a code sku.
+    Retrieve, update or delete a sku.
     """
     try:
         sku = Sku.objects.get(pk=pk)
     except Sku.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = SkuSerializer(sku)
@@ -42,8 +45,8 @@ def sku_detail(request, pk):
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         sku.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
