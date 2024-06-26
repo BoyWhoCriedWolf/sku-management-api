@@ -146,7 +146,7 @@ if not DEBUG:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-   'DEFAULT_PERMISSION_CLASSES': (permissions.AllowAny),
+   'DEFAULT_PERMISSION_CLASSES': (permissions.BasePermission),
 }
 
 
